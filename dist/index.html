@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+        <link rel="stylesheet"
+            href="css/style.css">
+        <link rel="stylesheet"
+            href="css/font-awesome.min.css">
+        <style>
+            .conatiner {
+                width: 600px;
+                height: 700px;
+                margin: 50px auto;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="container"
+            data-bind="template: {name: 'calendar', data: calendar}"></div>
+    </body>
+
+    <script type="text/html"
+        id="calendar">
+        <table data-bind="if: page._month() > -1">
+            <thead>
+                <tr>
+                    <span data-bind="text: page.year"></span>
+                </tr>
+                <tr>
+                    <a href="">
+                        <i class="fa fa-chevron-left"></i>
+                    </a>
+                    <span data-bind="text: page.monthName"></span>
+                    <a href="">
+                        <i class="fa fa-chevron-right"></i>
+                    </a>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </script>
+
+    <script src="lib/knockout.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/index.js"></script>
+
+</html>

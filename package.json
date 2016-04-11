@@ -1,0 +1,22 @@
+{
+  "name": "ko-custom-calendar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "node-sass dist/scss/ --output-style compressed -o dist/css/style.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://qwemaze@github.com/qwemaze/ko-custom-calendar.git"
+  },
+  "author": "Elias Baryshnikov <qwelias@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qwemaze/ko-custom-calendar/issues"
+  },
+  "homepage": "https://github.com/qwemaze/ko-custom-calendar#readme",
+  "dependencies": {
+
+  }
+}
