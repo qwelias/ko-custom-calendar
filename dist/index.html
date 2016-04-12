@@ -8,46 +8,69 @@
             href="css/style.css">
         <link rel="stylesheet"
             href="css/font-awesome.min.css">
+        <link rel="stylesheet"
+            href="css/style.css">
         <style>
-            .conatiner {
-                width: 600px;
-                height: 700px;
-                margin: 50px auto;
+            .calendar {
+                font-family: sans-serif;
+                width: 700px;
+                height: 600px;
+                margin: auto;
             }
-
+            .calendar table{
+                border-spacing: 0;
+                border-collapse: collapse;
+                border: solid 1px #bbb;
+            }
+            .calendar table td{
+                border: solid 1px #bbb;
+            }
         </style>
+
+        <script src="lib/knockout.js"></script>
+        <script src="js/calendar.js"></script>
+        <script src="js/index.js"></script>
     </head>
 
     <body>
-        <div class="container"
-            data-bind="template: {name: 'calendar', data: calendar}"></div>
+        <div class="calendar"
+            data-bind="template: {name: 'calendar-tmpl', data: calendar}"></div>
     </body>
 
     <script type="text/html"
-        id="calendar">
-        <table data-bind="if: page._month() > -1">
-            <thead>
-                <tr>
-                    <span data-bind="text: page.year"></span>
-                </tr>
-                <tr>
-                    <a href="">
-                        <i class="fa fa-chevron-left"></i>
-                    </a>
-                    <span data-bind="text: page.monthName"></span>
-                    <a href="">
-                        <i class="fa fa-chevron-right"></i>
-                    </a>
-                </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
+        id="calendar-tmpl">
+        <table>
+            <thead data-bind="template: {name: 'calendar-head-tmpl'}"></thead>
+            <tbody data-bind="template: {name: 'calendar-body-tmpl', foreach: page.weeks, as: 'week'}"></tbody>
         </table>
     </script>
 
-    <script src="lib/knockout.js"></script>
-    <script src="js/calendar.js"></script>
-    <script src="js/index.js"></script>
+    <script type="text/html" id="calendar-head-tmpl">
+        <tr>
+            <th colspan="2">
+                <a href="" data-bind="click: prevMonth">
+                    <i class="fa fa-chevron-left"></i>
+                </a>
+            </th>
+            <th colspan="3">
+                <span data-bind="text: page.monthName"></span> <span data-bind="text: page.year"></span>
+            </th>
+            <th colspan="2">
+                <a href="" data-bind="click: nextMonth">
+                    <i class="fa fa-chevron-right"></i>
+                </a>
+            </th>
+        </tr>
+    </script>
+    <script type="text/html" id="calendar-body-tmpl">
+        <tr data-bind="template: {name: 'calendar-cell-tmpl', foreach: week, as: 'day'}"></tr>
+    </script>
+    <script type="text/html" id="calendar-cell-tmpl">
+        <td>
+            <div class="cell">
+                <span data-bind="text: day.toLocaleString('ru', {day:'2-digit'})"></span>
+            </div>
+        </td>
+    </script>
 
 </html>

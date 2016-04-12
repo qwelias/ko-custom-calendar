@@ -1,5 +1,20 @@
 ( function () {
 	"use strict";
+
+	Date.prototype.getLocaleDay = function ( locale ) {
+		if ( locale == 'ru' ) {
+			return [ 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс' ].indexOf( this.toLocaleString( locale, {
+				weekday: 'short'
+			} ) );
+		} else {
+			return this.getDay();
+		}
+	};
+	Date.prototype.getWeek = function ( locale, startYear ) {
+		var onejan = new Date( startYear || this.getFullYear() );
+		return Math.ceil( ( ( ( this - onejan ) / 86400000 ) + onejan.getLocaleDay( locale ) + 1 ) / 7 ) - 1;
+	};
+
 	function Calendar( opts ) {
 		if ( !( this instanceof Calendar ) ) return new Calendar( opts );
 
@@ -16,8 +31,7 @@
 		this.current = ko.observable( opts.current );
 
 		this.page = {
-			_month: ko.observable( this.current().getMonth() ),
-			year: this.current().getFullYear()
+			_date: ko.observable( new Date( this.current().getFullYear(), this.current().getMonth() ) )
 		};
 		this.page = Object.defineProperties( this.page, {
 			monthName: {
@@ -28,66 +42,88 @@
 					} );
 				}
 			},
+			year:{
+				enumerable: true,
+				get: function () {
+					return this._date().getFullYear();
+				}
+			},
 			month: {
 				enumerable: true,
 				get: function () {
-					return this._month();
+					return this._date().getMonth();
 				},
 				set: function ( val ) {
-					if ( val < 12 && val > -1 ) this._month( val );
+					this._date( new Date( this._date().getFullYear(), val ) );
 				}
 			},
-			days:{
+			curDays: {
 				enumerable: true,
-				get: function(){
-
-					var lastDay = parseInt(new Date( this.year, this.month + 1, 0 ).toLocaleString(self.locale, {day:'numeric'}));
-					var days = new Array(lastDay).fill(0);
+				get: function () {
+					var lastDay = parseInt( new Date( this.year, this.month + 1, 0 ).toLocaleString( self.locale, {
+						day: 'numeric'
+					} ) );
+					var days = new Array( lastDay ).fill( 0 );
+					return days.map( function ( v, i ) {
+						return new Date( self.page.year, self.page.month, ++i );
+					} );
+				}
+			},
+			prevDays: {
+				enumerable: true,
+				get: function () {
+					var lastDay = parseInt( new Date( this.year, this.month, 0 ).toLocaleString( self.locale, {
+						day: 'numeric'
+					} ) );
+					var days = new Array( lastDay ).fill( 0 );
 					var i = 1;
-					days = days.map(function(){
-						return new Date(self.page.year, self.page.month, i++);
-					});
-
-					var firstWDay = days[0].getDay();
-					var diff = 1 - firstWDay;
-					var prevDays = [];
-					if(diff == 1){
-						new Array(6).fill(0).map(function(v,i){
-							prevDays.push(new Date(self.page.year, self.page.month, -i));
-						});
-					} else if(diff < 0){
-						new Array(-diff).fill(0).map(function(v,i){
-							prevDays.push(new Date(self.page.year, self.page.month, -i));
-						});
-					};
-					prevDays.reverse();
-
-					var lastWDay = days[days.length-1].getDay();
-					var diff = 6 - lastWDay + 1;
-					var nextDays = new Array(diff).fill(0).map(function(v,i){
-						return new Date(self.page.year, self.page.month, lastDay + i + 1);
-					});
-
-					return prevDays.concat(days, nextDays);
+					return days.map( function ( v, i ) {
+						return new Date( self.page.year, self.page.month - 1, ++i );
+					} );
+				}
+			},
+			nextDays: {
+				enumerable: true,
+				get: function () {
+					var lastDay = parseInt( new Date( this.year, this.month + 2, 0 ).toLocaleString( self.locale, {
+						day: 'numeric'
+					} ) );
+					var days = new Array( lastDay ).fill( 0 );
+					return days.map( function ( v, i ) {
+						return new Date( self.page.year, self.page.month + 1, ++i );
+					} );
+				}
+			},
+			days: {
+				enumerable: true,
+				get: function () {
+					return this.prevDays.concat( this.curDays, this.nextDays );
+				}
+			},
+			weeks: {
+				enumerable: true,
+				get: function () {
+					var firstWeek = new Date( this.year, this.month ).getWeek( self.locale, 1970 );
+					var lastWeek = firstWeek + 5;
+					var result = new Array( 6 ).fill( false ).map( function () {
+						return new Array()
+					} );
+					this.days.map( function ( d ) {
+						var week = d.getWeek( self.locale, 1970 );
+						if ( week >= firstWeek && week <= lastWeek ) {
+							result[ week - firstWeek ].push( d );
+						};
+					} );
+					return result;
 				}
 			}
 		} )
 	};
 	Calendar.prototype.nextMonth = function () {
-		if ( this.page.month + 1 > 11 ) {
-			this.page.month = 0;
-			++this.page.year;
-		} else {
-			++this.page.month;
-		}
+		++this.page.month;
 	};
 	Calendar.prototype.prevMonth = function () {
-		if ( this.page.month - 1 < 0 ) {
-			this.page.month = 11;
-			--this.page.year;
-		} else {
-			--this.page.month;
-		}
+		--this.page.month;
 	};
 	window.Calendar = Calendar;
 } )();

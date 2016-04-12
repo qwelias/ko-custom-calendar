@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node-sass dist/scss/ --output-style compressed -o dist/css/style.css"
+    "build": "node-sass dist/scss/ --output-style compressed -o dist/css/",
+    "watch": "node-sass -w dist/scss/ --output-style compressed -o dist/css/"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,24 @@
+.calendar {
+    table {
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        thead{
+            tr{
+                th{
+                    a{
+                        display: block;
+                    }
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                td {
+                    width: calc(14.2857%);
+                }
+            }
+        }
+    }
+}
