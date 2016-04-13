@@ -11,20 +11,13 @@
         <link rel="stylesheet"
             href="css/style.css">
         <style>
-            .calendar {
+            #calendar {
                 font-family: sans-serif;
                 width: 700px;
                 height: 600px;
                 margin: auto;
             }
-            .calendar table{
-                border-spacing: 0;
-                border-collapse: collapse;
-                border: solid 1px #bbb;
-            }
-            .calendar table td{
-                border: solid 1px #bbb;
-            }
+
         </style>
 
         <script src="lib/knockout.js"></script>
@@ -33,44 +26,62 @@
     </head>
 
     <body>
-        <div class="calendar"
-            data-bind="template: {name: 'calendar-tmpl', data: calendar}"></div>
+        <div id="calendar"
+            data-bind="template: {name: 'calendar-tmpl', foreach: [calendar], as: 'calendar'}"></div>
+
+        <script type="text/html"
+            id="calendar-tmpl">
+            <table>
+                <thead data-bind="template: {name: 'calendar-head-tmpl'}"></thead>
+                <tbody data-bind="template: {name: 'calendar-body-tmpl', foreach: calendar.page.weeks, as: 'week'}"></tbody>
+            </table>
+        </script>
+
+        <script type="text/html"
+            id="calendar-head-tmpl">
+            <tr>
+                <th colspan="2">
+                    <a href=""
+                        data-bind="click: calendar.prevMonth">
+                        <i class="fa fa-chevron-left"></i>
+                    </a>
+                </th>
+                <th colspan="3">
+                    <span data-bind="text: calendar.page.monthName"></span>
+                    <span data-bind="text: calendar.page.year"></span>
+                </th>
+                <th colspan="2">
+                    <a href=""
+                        data-bind="click: calendar.nextMonth">
+                        <i class="fa fa-chevron-right"></i>
+                    </a>
+                </th>
+            </tr>
+            <tr data-bind="foreach:{data: calendar.dayNames, as: 'day'}">
+                <th>
+                    <span data-bind="text: day"></span>
+                </th>
+            </tr>
+        </script>
+        <script type="text/html"
+            id="calendar-body-tmpl">
+            <tr data-bind="template: {name: 'calendar-cell-tmpl', foreach: week, as: 'day'}"></tr>
+        </script>
+        <script type="text/html"
+            id="calendar-cell-tmpl">
+            <td data-bind="
+            click:function(){calendar.current(day)},
+            css:{
+                current:calendar.current().toDateString() == day.toDateString(),
+                now:calendar.now.toDateString() == day.toDateString(),
+                faded:calendar.page.month != day.getMonth()
+            }">
+                <div>
+                    <span data-bind="text: day.toLocaleString('ru', {day:'2-digit'})"></span>
+                </div>
+            </td>
+        </script>
+
     </body>
-
-    <script type="text/html"
-        id="calendar-tmpl">
-        <table>
-            <thead data-bind="template: {name: 'calendar-head-tmpl'}"></thead>
-            <tbody data-bind="template: {name: 'calendar-body-tmpl', foreach: page.weeks, as: 'week'}"></tbody>
-        </table>
-    </script>
-
-    <script type="text/html" id="calendar-head-tmpl">
-        <tr>
-            <th colspan="2">
-                <a href="" data-bind="click: prevMonth">
-                    <i class="fa fa-chevron-left"></i>
-                </a>
-            </th>
-            <th colspan="3">
-                <span data-bind="text: page.monthName"></span> <span data-bind="text: page.year"></span>
-            </th>
-            <th colspan="2">
-                <a href="" data-bind="click: nextMonth">
-                    <i class="fa fa-chevron-right"></i>
-                </a>
-            </th>
-        </tr>
-    </script>
-    <script type="text/html" id="calendar-body-tmpl">
-        <tr data-bind="template: {name: 'calendar-cell-tmpl', foreach: week, as: 'day'}"></tr>
-    </script>
-    <script type="text/html" id="calendar-cell-tmpl">
-        <td>
-            <div class="cell">
-                <span data-bind="text: day.toLocaleString('ru', {day:'2-digit'})"></span>
-            </div>
-        </td>
-    </script>
 
 </html>

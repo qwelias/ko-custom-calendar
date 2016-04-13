@@ -1,9 +1,12 @@
 ( function () {
 	"use strict";
-
+	String.prototype.capFirst = function () {
+		return this.charAt( 0 ).toUpperCase() + this.slice( 1 );
+	}
+	var dayNames = [ 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс' ];
 	Date.prototype.getLocaleDay = function ( locale ) {
 		if ( locale == 'ru' ) {
-			return [ 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс' ].indexOf( this.toLocaleString( locale, {
+			return dayNames.indexOf( this.toLocaleString( locale, {
 				weekday: 'short'
 			} ) );
 		} else {
@@ -26,6 +29,8 @@
 			locale: 'en-us'
 		}, opts );
 
+		this.dayNames = dayNames;
+
 		this.locale = opts.locale;
 		this.events = opts.events;
 		this.current = ko.observable( opts.current );
@@ -39,10 +44,10 @@
 				get: function () {
 					return new Date( this.year, this.month ).toLocaleString( self.locale, {
 						month: 'long'
-					} );
+					} ).capFirst();
 				}
 			},
-			year:{
+			year: {
 				enumerable: true,
 				get: function () {
 					return this._date().getFullYear();
