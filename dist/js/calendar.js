@@ -18,6 +18,11 @@
 		return Math.ceil( ( ( ( this - onejan ) / 86400000 ) + onejan.getLocaleDay( locale ) + 1 ) / 7 ) - 1;
 	};
 
+	function Day( d, e ) {
+		this.d = d;
+		this.e = e;
+	};
+
 	function Calendar( opts ) {
 		if ( !( this instanceof Calendar ) ) return new Calendar( opts );
 
@@ -26,7 +31,12 @@
 
 		opts = Object.assign( {
 			current: this.now,
-			locale: 'en-us'
+			locale: 'en-us',
+			events: ko.observableArray([{
+				title:'МуМу',
+				tmpl:'event',
+				time:new Date(2016, 3, 16, 13, 40)
+			}])
 		}, opts );
 
 		this.dayNames = dayNames;
@@ -38,7 +48,7 @@
 		this.page = {
 			_date: ko.observable( new Date( this.current().getFullYear(), this.current().getMonth() ) )
 		};
-		this.page = Object.defineProperties( this.page, {
+		Object.defineProperties( this.page, {
 			monthName: {
 				enumerable: true,
 				get: function () {
@@ -80,20 +90,17 @@
 					var lastDay = parseInt( new Date( this.year, this.month, 0 ).toLocaleString( self.locale, {
 						day: 'numeric'
 					} ) );
-					var days = new Array( lastDay ).fill( 0 );
+					var days = new Array( 14 ).fill( 0 );
 					var i = 1;
 					return days.map( function ( v, i ) {
-						return new Date( self.page.year, self.page.month - 1, ++i );
+						return new Date( self.page.year, self.page.month - 1, lastDay - 14 + ++i );
 					} );
 				}
 			},
 			nextDays: {
 				enumerable: true,
 				get: function () {
-					var lastDay = parseInt( new Date( this.year, this.month + 2, 0 ).toLocaleString( self.locale, {
-						day: 'numeric'
-					} ) );
-					var days = new Array( lastDay ).fill( 0 );
+					var days = new Array( 14 ).fill( 0 );
 					return days.map( function ( v, i ) {
 						return new Date( self.page.year, self.page.month + 1, ++i );
 					} );
@@ -102,7 +109,12 @@
 			days: {
 				enumerable: true,
 				get: function () {
-					return this.prevDays.concat( this.curDays, this.nextDays );
+					return this.prevDays.concat( this.curDays, this.nextDays ).map( function ( d ) {
+						var events = typeof self.events == "function" ? self.events() : self.events;
+						return new Day( d, events.find( function (e) {
+							return e.time.toDateString() == d.toDateString();
+						} ) )
+					} );
 				}
 			},
 			weeks: {
@@ -114,7 +126,7 @@
 						return new Array()
 					} );
 					this.days.map( function ( d ) {
-						var week = d.getWeek( self.locale, 1970 );
+						var week = d.d.getWeek( self.locale, 1970 );
 						if ( week >= firstWeek && week <= lastWeek ) {
 							result[ week - firstWeek ].push( d );
 						};
