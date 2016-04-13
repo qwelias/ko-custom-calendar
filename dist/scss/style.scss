@@ -1,80 +1,22 @@
-#calendar {
-    cursor: default;
-    font-size: 1em;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-
-    * {
-        position: relative;
-    }
-
-    > table {
+.calendar {
+    table {
         text-align: center;
         width: 100%;
         height: 100%;
-        border-spacing: 0;
-        border-collapse: collapse;
-        border: solid 1px #bbb;
-
-        > thead {
-            > tr:first-child {
-                line-height: 2em;
-                font-size: 1.2em;
-
-                > th {
-                    > a {
+        thead{
+            tr{
+                th{
+                    a{
                         display: block;
                     }
-
-                    > a:hover {
-                        background-color: #eee;
-                    }
                 }
-            }
-
-            > tr:last-child > th {
-                border: solid 1px #bbb;
             }
         }
 
-        > tbody {
-            > tr {
-                > td {
-                    cursor: pointer;
-                    box-sizing: border-box;
-                    border: solid 1px #bbb;
-                    width: 14.2857%;
-
-                    > div {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        bottom: 0;
-                        right: 0;
-                        text-align: left;
-                        >span{
-                            line-height: 1.5em;
-                            padding: 0.2em;
-                        }
-                    }
-                }
-
-                > td:hover {
-                    background-color: #fafafa;
-                }
-
-                > td.now {
-                    background-color: #ddd;
-                }
-
-                > td.current {
-                    outline: solid 3px #888;
-                }
-
-                > td.faded {
-                    color: #ccc;
+        tbody {
+            tr {
+                td {
+                    width: calc(14.2857%);
                 }
             }
         }
