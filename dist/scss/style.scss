@@ -56,25 +56,26 @@
                         text-align: left;
 
                         > span {
+                            padding: 0.3em;
                             line-height: 1.5em;
-                            padding: 0.2em;
                         }
                     }
                 }
 
-                > td:hover {
+                > td:hover > div {
                     background-color: #fafafa;
                 }
 
-                > td.now {
+                > td.now > div {
                     background-color: #ddd;
                 }
 
-                > td.current {
+                > td.current > div {
                     outline: solid 3px #888;
+                    z-index: 1;
                 }
 
-                > td.faded {
+                > td.faded > div {
                     color: #ccc;
                 }
             }
