@@ -12,23 +12,35 @@
             href="css/style.css">
         <style>
             #calendar {
-                font-family: sans-serif;
-                width: 700px;
-                height: 600px;
+                font-family: 'Roboto',sans-serif;
+                width: 850px;
+                height: 790px;
                 margin: auto;
             }
-            .custom-event{
+            .custom-event, .custom-event *{
+                -webkit-transition: all 0.7s ease;
+                -moz-transition: all 0.7s ease;
+                -o-transition: all 0.7s ease;
+                transition: all 0.7s ease;
+            }
+            .custom-event:hover{
+                border: solid 0.2em #4cd886 !important;
+            }
+            .custom-event:hover > div > i{
+                color: #4cd886;
+            }
+            .custom-event > div{
                 text-align: center;
             }
-            .custom-event div:first-child{
+            .custom-event > div > div:first-child{
                 font-weight: bold;
                 font-size: 0.8em;
                 margin-bottom: 0.2em;
             }
-            .custom-event i{
+            .custom-event > div > i{
                 font-size: 1.5em;
             }
-            .custom-event div:last-child{
+            .custom-event > div > div:last-child{
                 font-size: 0.6em;
                 margin-top: 0.2em;
             }
@@ -109,9 +121,9 @@
         </script>
         <script type="text/html"
             id="calendar-cell-event-tmpl">
-            <div data-bind="click:function(){calendar.current(day.d)}">
+            <div class="custom-event" data-bind="click:function(){calendar.current(day.d)}">
                 <span data-bind="text: day.d.toLocaleString('ru', {day:'2-digit'})"></span>
-                <div class="custom-event">
+                <div>
                     <div data-bind="text: day.e.title"></div>
                     <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
                     <div data-bind="text: day.e.time.toLocaleTimeString(calendar.locale)"></div>

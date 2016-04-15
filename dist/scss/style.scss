@@ -20,23 +20,31 @@
 
         > thead {
             > tr:first-child {
-                line-height: 2em;
-                font-size: 1.2em;
+                line-height: 2.5em;
+                font-size: 1em;
 
                 > th {
-                    font-weight: 900;
+                    font-weight: bold;
                     > a {
                         display: block;
+                        color: black;
                     }
 
                     > a:hover {
-                        background-color: #eee;
+                        color: #6093F0;
+                    }
+                    > a:active {
+                        color: #6093F0;
                     }
                 }
             }
 
-            > tr:last-child > th {
-                border: solid 1px #bbb;
+            > tr:last-child{
+                line-height: 2em;
+                font-size: 0.7em;
+                > th {
+                    border: solid 1px #bbb;
+                }
             }
         }
 
@@ -54,31 +62,31 @@
                         left: 0;
                         bottom: 0;
                         right: 0;
+                        border: solid 0.2em transparent;
                         text-align: left;
 
                         > span {
-                            font-size: 0.8em;
-                            padding: 0.3em;
-                            line-height: 1.5em;
+                            font-size: 0.7em;
+                            padding: 0.5em;
                         }
                     }
                 }
 
                 > td:hover > div {
-                    background-color: #fafafa;
+                    // background-color: #fafafa;
                 }
 
                 > td.now > div {
-                    background-color: #ddd;
+                    // background-color: #ddd;
                 }
 
                 > td.current > div {
-                    outline: solid 3px #888;
-                    z-index: 1;
+                    // outline: solid 3px #888;
+                    // z-index: 1;
                 }
 
                 > td.faded > div {
-                    color: #ccc;
+                    color: #aaa;
                 }
             }
         }

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node-sass dist/scss/ --output-style compressed -o dist/css/",
-    "watch": "node-sass -w dist/scss/ --output-style compressed -o dist/css/"
+    "build": "node_modules/.bin/node-sass dist/scss/ --output-style compressed -o dist/css/",
+    "watch": "node_modules/.bin/node-sass -w dist/scss/ --output-style compressed -o dist/css/"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/qwemaze/ko-custom-calendar#readme",
   "dependencies": {
-
+    "node-sass": "3.4.2"
   }
 }
