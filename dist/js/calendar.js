@@ -161,14 +161,14 @@
 			weeks: {
 				enumerable: true,
 				get: function () {
-					var firstWeek = new Date( this.year, this.month ).getWeek( 1, 1970 );
+					var firstWeek = new Date( this.year, this.month ).getWeek( 1970 );
 					var lastWeek = firstWeek + 5;
 					var result = new Array( 6 ).fill( false ).map( function () {
 						return new Array()
 					} );
 					console.log( "<==================================>" )
 					this.days.map( function ( d ) {
-						var week = d.d.getWeek( 1, 1970 );
+						var week = d.d.getWeek( 1970 );
 						if ( week >= firstWeek && week <= lastWeek ) {
 							console.log( d.d )
 							result[ week - firstWeek ].push( d );
