@@ -118,7 +118,7 @@
 				get: function () {
 					var lastDay = parseInt( new Date( this.year, this.month + 1, 0 ).toLocaleString( self.locale, {
 						day: 'numeric'
-					} ) );
+					} ).replace(/\u200E/g,"") );
 					var days = new Array( lastDay ).fill( 0 );
 					return days.map( function ( v, i ) {
 						return new Date( self.page.year, self.page.month, ++i );
