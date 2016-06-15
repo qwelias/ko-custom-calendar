@@ -166,11 +166,9 @@
 					var result = new Array( 6 ).fill( false ).map( function () {
 						return new Array()
 					} );
-					console.log( "<==================================>" )
 					this.days.map( function ( d ) {
 						var week = d.d.getWeek( 1970 );
 						if ( week >= firstWeek && week <= lastWeek ) {
-							console.log( d.d )
 							result[ week - firstWeek ].push( d );
 						};
 					} );
